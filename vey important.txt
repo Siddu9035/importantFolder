@@ -1,0 +1,48 @@
+// const transactionInfo = {
+    //   VendorTxCode: '',
+    //   Amount: item.orderSummary[0].price,
+    //   Currency: 'GBP',
+    //   Description: 'The payment Page',
+    //   SuccessURL: '',
+    //   FailureURL: '',
+    //   BillingSurname: item.orderDetail.county,
+    //   BillingFirstnames: item.orderDetail.county,
+    //   BillingAddress1: item.orderDetail.address1,
+    //   BillingCity: item.orderDetail.county,
+    //   BillingPostCode: item.orderDetail.postcode,
+    //   BillingCountry: item.orderDetail.country,
+    //   DeliverySurname: item.orderDetail.county,
+    //   DeliveryFirstnames: item.orderDetail.county,
+    //   DeliveryAddress1: item.orderDetail.address1,
+    //   DeliveryCity: item.orderDetail.county,
+    //   DeliveryPostCode: item.orderDetail.postcode,
+    //   DeliveryCountry: item.orderDetail.country,
+    //   // Add more fields as needed
+    // };
+
+    // const encryptionKey = 'yourEncryptionKey';
+    // // Convert the transactionInfo object into a plain text string
+    // const cryptField = Object.entries(transactionInfo)
+    //   .map(([key, value]) => `${key}=${value}`)
+    //   .join('&');
+
+    // let encryptedData = CryptoJS.AES.encrypt(
+    //   JSON.stringify(cryptField),
+    //   encryptionKey,
+    // ).toString();
+    // console.log('===========>>>>:', encryptedData);
+    // let bytes = CryptoJS.AES.decrypt(encryptedData, encryptionKey);
+    // let decryptedData = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    // console.log('=>>>>>>>>>>>>>>>>>>>>>decryptedData:', decryptedData);
+
+////////////////////////////////////////////////////////////////////////////////
+// const toggleCard = orderno => {
+    //   if (orderno === expandedOrderNo) {
+    //     setExpandedOrderNo(null);
+    //   } else {
+    //     setExpandedOrderNo(orderno);
+    //   }
+    // };
+            // onPress={() => toggleCard(item.orderno)}
+        {/* {expandedOrderNo === item.orderno && ( */}
+        {/* )} */}

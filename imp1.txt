@@ -1,0 +1,632 @@
+const renderDropDown1 = () => {
+    const dropDown2 = [
+      {itemName: 'Items'},
+      {itemName: 'Author'},
+      {itemName: 'Title'},
+      {itemName: 'High'},
+      {itemName: 'Low'},
+    ];
+    return (
+      <View>
+        {isClicked && (
+          <ScrollView style={styles.dropdownOptions}>
+            {dropDown2.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  setSubCategory(item);
+                  setIsClicked(false);
+                }}
+                style={styles.option}>
+                <Text
+                  style={[
+                    styles.dropdownOptionText,
+                    {
+                      color:
+                        item.itemName === subCategory.itemName
+                          ? '#FFF8F2'
+                          : 'black',
+                      backgroundColor:
+                        item.itemName === subCategory.itemName && '#873900',
+                    },
+                  ]}>
+                  {item.itemName}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </View>
+    );
+  };
+
+const toggleDropdown = index => {
+    if (index === isClicked) {
+      // Clicking on the currently open dropdown, close it
+      setIsClicked(null);
+    } else {
+      // Clicking on a different dropdown, open it and close the previously open one
+      setIsClicked(index);
+    }
+  };
+isClicked={index === isClicked}
+                setIsClicked={() => toggleDropdown(index)}
+ {/* <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            style={{
+              paddingRight: 16,
+              flexDirection: 'row',
+              // flex: 1,
+            }}>
+            {selectedSubCatagories.map((item, index) => (
+              <View
+                key={item.name}
+                style={{marginRight: 50, position: 'relative', zIndex: 1, width: 200}}>
+                <Dropdowns
+                  initialText={item.name}
+                  options={item.dropdownlist}
+                  handleClick={selectedItem => {
+                    setIsSearched(false);
+                    setIsReference(true);
+                    setReference(selectedItem.reference);
+                    setSelectedValue(selectedItem.name);
+                  }}
+                  isClicked={index === isClicked}
+                  setIsClicked={() => toggleDropdown(index)}
+                />
+              </View>
+            ))}
+          </ScrollView> */}
+// return (
+//   <View style={styles.dropdownContainer}>
+//     <LinearGradient
+//       colors={['#B14B00', '#873900']}
+//       style={styles.dropdownHeader}>
+//       <TouchableOpacity
+//         onPress={() => {
+//           setIsClicked(!isClicked);
+//         }}
+//         activeOpacity={1}>
+//         <Text style={styles.dropDownText}>
+//           {selectedItem?.name || initialText}
+//         </Text>
+//       </TouchableOpacity>
+//       <TouchableOpacity
+//         onPress={() => {
+//           setIsClicked(!isClicked);
+//         }}
+//         style={{paddingVertical: 7, paddingHorizontal: 10}}>
+//         <Up
+//           width={20}
+//           height={10}
+//           style={[isClicked && styles.reverseImage]}
+//         />
+//       </TouchableOpacity>
+//     </LinearGradient>
+//     {isClicked && (
+//       <ScrollView style={styles.dropdownOptions}>
+//         {options?.map((item, index) => (
+//           <TouchableOpacity
+//             key={index}
+//             onPress={() => {
+//               handleOptionClick(item);
+//             }}
+//             style={styles.option}>
+//             <Text
+//               style={[
+//                 styles.dropdownOptionText,
+//                 {
+//                   color: item === selectedItem ? '#FFF8F2' : 'black',
+//                   backgroundColor: item === selectedItem && '#873900',
+//                 },
+//               ]}>
+//               {item.name}
+//             </Text>
+//           </TouchableOpacity>
+//         ))}
+//       </ScrollView>
+//     )}
+//   </View>
+// );
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+{/* {isClicked && (
+        <FlatList
+          data={options}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => {
+                handleOptionClick(item);
+              }}
+              style={styles.options}>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={[
+                  styles.dropdownOptionText,
+                  {
+                    color: item === selectedItem ? '#FFF8F2' : 'black',
+                    backgroundColor: item === selectedItem && '#873900',
+                  },
+                ]}>
+                {item.name || item.itemName}
+              </Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.dropdownOptions}
+        />
+      )} */}
+ // {
+                  //   color:
+                  //     item.itemName === selectedFilter.itemName
+                  //       ? 'white'
+                  //       : 'black',
+                  //   backgroundColor:
+                  //     item.itemName === selectedFilter.itemName && '#873900',
+                  // },
+
+{
+                      color: item === selectedItem ? '#FFF8F2' : 'black',
+                      backgroundColor: item === selectedItem && '#873900',
+                    },
+
+ // selectedValue={selectedCatagories}
+            // selectedCategoryName={selectedCatagories.itemName}
+///////////////////////////////////////////////////////////////////////////////////
+// const handleDropdowndata = data => {
+  //   // Create an empty array to store the modified data
+  //   let drpData = data.map(item => {
+  //     item = {...item, itemName: item.name};
+  //     return item;
+  //   });
+  //   return drpData;
+  // };
+/////////////////////////////////////////////////////////////////////////////////////////
+//   style={{
+        //     borderWidth:
+        //       product_Detail.image && product_Detail.image.length > 0
+        //         ? null
+        //         : 0.9,
+        //     borderColor:
+        //       product_Detail.image && product_Detail.image.length > 0
+        //         ? ''
+        //         : 'black',
+        //     // width: 250,
+        //     // height: 270,
+        //     marginTop: 10,
+        //   }}
+///////////////////////////////////////////////////////////////////////////////////////
+ {/* <Image
+            source={{
+              uri:
+                product_Detail.image && product_Detail.image.length > 0
+                  ? product_Detail.image[currentImageIndex]
+                  : null,
+            }} // Display the first image if available
+            style={{width: 250, height: 270, resizeMode: 'stretch'}}
+          /> */}
+//////////////////////////////////////////////////////////////////////////////////
+ {/* <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingHorizontal: 18,
+          }}>
+          <TouchableOpacity
+            onPress={previousImage}
+            disabled={
+              currentImageIndex === 0 || product_Detail.image.length === 0
+            }
+            style={[
+              styles.backwardButton,
+              {opacity: currentImageIndex === 0 ? 0.3 : 1},
+            ]}>
+            <Text style={styles.backwardText}>{'<'}</Text>
+          </TouchableOpacity>
+          {renderProductDetail()}
+          <TouchableOpacity
+            // disabled={
+            //   product_Detail.image &&
+            //   currentImageIndex === product_Detail.image.length - 1
+            // }
+            disabled={
+              !product_Detail.image ||
+              currentImageIndex === product_Detail.image.length - 1
+            }
+            onPress={nextImage}
+            style={[
+              styles.forwardButton,
+              //   {
+              //     opacity:
+              //       product_Detail.image &&
+              //       currentImageIndex === product_Detail.image.length - 1
+              //         ? 0.3
+              //         : 1,
+              //   },
+              {
+                opacity:
+                  !product_Detail.image ||
+                  currentImageIndex === product_Detail.image.length - 1
+                    ? 0.3
+                    : 1,
+              },
+            ]}>
+            <Text style={styles.forwardText}>{'>'}</Text>
+          </TouchableOpacity>
+        </View> */}
+
+///////////////////////////////////////////////////////////////////
+contact us page
+{/* {contactData.data && (
+          <View>
+            <Text style={{color: 'black'}}>
+              {/* {contactData
+              ? contactData.data[0].contact_info
+                  ?.replace(/<[^>]+>/g, '')
+                  .replaceAll('&nbsp;', '')
+              : ''} */}
+              {/* {splitContactInfo(contactData.data[0].contact_info)} */}
+            {/* </Text> */}
+            {/* <Text>{contactData.data[0].terms_conditions}</Text> */}
+          {/* </View> */}
+        {/* )} */}
+/////////////////////////////////////////////////////
+// const handleButtonClick = () => {
+  //   if (
+  //     userDetails.email === '' ||
+  //     userDetails.name === '' ||
+  //     userDetails.Address1 === '' ||
+  //     userDetails.Address2 === '' ||
+  //     userDetails.country === '' ||
+  //     userDetails.state === '' ||
+  //     userDetails.payment === '' ||
+  //     userDetails.mobileNumber === ''
+  //   ) {
+  //     Alert.alert('Warning!', 'All Field Are Mandetory');
+  //   } else if (!nameRegex.test(userDetails.name)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       name: 'Enter valid name',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       name: true,
+  //     });
+  //   } else if (!countryRegex.test(userDetails.country)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       country: 'Enter valid country',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       country: true,
+  //     });
+  //   } else if (!emailRegex.test(userDetails.email)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       email: 'Enter valid email',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       email: true,
+  //     });
+  //   } else if (!regexMobile.test(userDetails.mobileNumber)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       mobileNumber: 'Enter valid mobileNumber',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       mobileNumber: true,
+  //     });
+  //   } else if (!addressRegex.test(userDetails.Address1)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       Address1: 'Enter valid Address',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       Address1: true,
+  //     });
+  //   } else if (!addressRegex.test(userDetails.Address2)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       Address2: 'Enter valid Address',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       Address2: true,
+  //     });
+  //   } else if (!stateRegex.test(userDetails.state)) {
+  //     setErrorMsg({
+  //       ...errorMsg,
+  //       state: 'Enter valid state',
+  //     });
+  //     setShowError({
+  //       ...showError,
+  //       state: true,
+  //     });
+  //   }
+  //   // else if (!paymentRegex.test(userDetails.paymentRegex)) {
+  //   //   setErrorMsg({
+  //   //     ...errorMsg,
+  //   //     paymentRegex: 'Enter valid state',
+  //   //   });
+  //   //   setShowError({
+  //   //     ...showError,
+  //   //     paymentRegex: true,
+  //   //   });
+  //   // }
+  //   else {
+  //     setShowError({
+  //       ...showError,
+  //       mobileNumber: false,
+  //       email: false,
+  //       name: false,
+  //       country: false,
+  //       Address1: false,
+  //       Address2: false,
+  //       state: false,
+  //       // payment: false,
+  //     });
+  //   }
+  // };
+////////////////////////////////////////////////////////////////
+// <View style={styles.secondCard}>
+    //   <View style={{alignItems: 'center', padding: 10}}>
+    //     {item.image && item.image.length > 0 ? (
+    //       <Image
+    //         source={{uri: item.image[0]}} // Display the first image if available
+    //         style={{width: 200, height: 200, marginTop: 10}}
+    //       />
+    //     ) : (
+    //       <View
+    //         style={{
+    //           borderWidth: 0.4,
+    //           borderColor: '#CACFD2',
+    //           width: 107,
+    //           height: 120,
+    //           marginTop: 10,
+    //         }}></View>
+    //     )}
+    //   </View>
+    //   <View
+    //     style={{
+    //       flexDirection: 'row',
+    //       alignItems: 'center',
+    //       justifyContent: 'space-between',
+    //     }}>
+    //     <Text style={styles.secondcardauthor}>{item.author}</Text>
+    //     <Text style={styles.secondcardtext}>&pound; {item.price}</Text>
+    //   </View>
+    //   <Text
+    //     style={styles.secondcardtitle}
+    //     ellipsizeMode="tail"
+    //     numberOfLines={2}>
+    //     {item.title}
+    //   </Text>
+    //   <Text style={styles.secondcarddes} ellipsizeMode="tail" numberOfLines={3}>
+    //     {item.description}
+    //   </Text>
+    //   <TouchableOpacity style={styles.Addtocartbutton} activeOpacity={1}>
+    //     <Text style={styles.addtocarttext}>Add To Cart</Text>
+    //   </TouchableOpacity>
+    // </View>
+////////////////////////////////////////////////////////////////////
+// <TouchableOpacity
+      //   onPress={() =>
+      //     navigation.navigate('ProductDetail', {
+      //       sysid: item.sysid,
+      //       // setSelectedCatagories,
+      //     })
+      //   }
+      //   activeOpacity={0.9}
+      //   style={styles.secondCard}>
+      //   <View style={{alignItems: 'center', padding: 10}}>
+      //     {item.image && item.image.length > 0 ? (
+      //       <Image
+      //         source={{uri: item.image[0]}} // Display the first image if available
+      //         style={{
+      //           width: '65%',
+      //           height: 200,
+      //           marginTop: 10,
+      //         }}
+      //       />
+      //     ) : (
+      //       <View
+      //         style={{
+      //           borderWidth: 0.4,
+      //           borderColor: '#CACFD2',
+      //           width: '65%',
+      //           height: 200,
+      //           marginTop: 10,
+      //         }}></View>
+      //     )}
+      //   </View>
+      //   <View
+      //     style={{
+      //       flexDirection: 'row',
+      //       alignItems: 'center',
+      //       justifyContent: 'space-between',
+      //     }}>
+      //     <Text style={styles.secondcardauthor} ellipsizeMode="tail">
+      //       {item.author}
+      //     </Text>
+      //     <Text style={styles.secondcardtext}>&pound; {item.price}</Text>
+      //   </View>
+      //   <Text
+      //     style={styles.secondcardtitle}
+      //     ellipsizeMode="tail"
+      //     numberOfLines={2}>
+      //     {item.title}
+      //   </Text>
+      //   <Text
+      //     style={styles.secondcarddes}
+      //     ellipsizeMode="tail"
+      //     numberOfLines={3}>
+      //     {item.description}
+      //   </Text>
+      //   <TouchableOpacity style={styles.Addtocartbutton} activeOpacity={1}>
+      //     <Text style={styles.addtocarttext}>Add To Cart</Text>
+      //   </TouchableOpacity>
+      // </TouchableOpacity>
+////////////////////////////////////////////////////
+ {/* image caraousel
+        {product_Detail && (
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              alignSelf: 'center',
+              justifyContent: 'space-between',
+              paddingHorizontal: 18,
+            }}>
+            <TouchableOpacity
+              onPress={previousImage}
+              disabled={
+                currentImageIndex === 0 ||
+                !product_Detail.image ||
+                product_Detail.image.length === 0
+              }
+              style={[
+                styles.backwardButton,
+                {
+                  opacity:
+                    currentImageIndex === 0 ||
+                    !product_Detail.image ||
+                    product_Detail.image.length === 0
+                      ? 0.3
+                      : 1,
+                },
+              ]}>
+              <Text style={styles.backwardText}>{'<'}</Text>
+            </TouchableOpacity>
+            {renderProductDetail()}
+            <TouchableOpacity
+              disabled={
+                !product_Detail.image ||
+                currentImageIndex === product_Detail.image.length - 1 ||
+                product_Detail.image.length === 0
+              }
+              onPress={nextImage}
+              style={[
+                styles.forwardButton,
+                {
+                  opacity:
+                    !product_Detail.image ||
+                    currentImageIndex === product_Detail.image.length - 1 ||
+                    product_Detail.image.length === 0
+                      ? 0.3
+                      : 1,
+                },
+              ]}>
+              <Text style={styles.forwardText}>{'>'}</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {/* product detail  */}
+        {/* {product_Detail && (
+          <View style={{paddingHorizontal: 18, marginTop: 20}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingVertical: 8,
+              }}>
+              <Text
+                ellipsizeMode="tail"
+                numberOfLines={1}
+                style={styles.productAuthor}>
+                {product_Detail.author}
+              </Text>
+              {product_Detail.price !== undefined && (
+                <Text style={styles.productPrice}>
+                  &pound; {product_Detail.price}
+                </Text>
+              )}
+            </View>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={1}
+              style={styles.productTitle}>
+              {product_Detail.title}
+            </Text>
+            <Text
+              ellipsizeMode="tail"
+              numberOfLines={3}
+              style={styles.productDes}>
+              {product_Detail.description}
+            </Text>
+          </View>
+        )} */}
+
+        {/* add to cart button */}
+        {/* <TouchableOpacity
+          onPress={addToCart}
+          style={styles.Addtocartbutton}
+          activeOpacity={1}>
+          <Text style={styles.addtocarttext}>Add To Cart</Text>
+        </TouchableOpacity> */}
+        {/* shipping address */}
+        {/* <View style={{paddingHorizontal: 18}}>
+          <Text style={styles.shippingHead}>Shipping</Text>
+          <Text style={styles.shippingAddress}>
+            US $74.99 eBay International Shipping. See details for shipping
+          </Text>
+          <Text style={styles.shippingAdres1}>
+            Located in: Prospect, New York, United States This item may be
+            subject to duties and taxes upon delivery
+          </Text>
+          <Text style={styles.delivery}>Delivery</Text>
+          <Text style={styles.deliveryStatus}>
+            Estimated between Thu, Aug 24 and Mon, Sep 18 to 560001
+          </Text>
+          <Text style={styles.deliveryStatus2}>
+            Please note the delivery estimate is greater than 26 business days.
+          </Text>
+          <Text style={styles.deliveryStatus3}>
+            Seller ships within 1 day after receiving cleared payment.
+          </Text>
+        </View>
+        <Text style={styles.relatedText}>Related Items</Text> */}
+?????????????????????????????????????????????????????????????????????????????/{/* {isClicked && (
+        <FlatList
+          nestedScrollEnabled={true}
+          data={options}
+          keyExtractor={(item, index) => index}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              disabled={selectedItem?.name === item.name}
+              onPress={() => {
+                handleOptionClick(item);
+              }}>
+              <Text
+                numberOfLines={1}
+                ellipsizeMode="tail"
+                style={[
+                  styles.dropdownOptionText,
+                  {
+                    color:
+                      selectedItem?.name === item.name ? '#FFF8F2' : '#873900',
+                    backgroundColor:
+                      selectedItem?.name === item.name ? '#873900' : null,
+                  },
+                ]}>
+                {item.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          style={{
+            ...styles.dropdownOptions,
+            minWidth: isGradient ? 200 : undefined,
+            marginTop: isGradient ? 52 : undefined,
+            width: !isGradient ? '100%' : undefined,
+            top: !isGradient ? 48 : undefined,
+          }}
+        />
+      )} */}

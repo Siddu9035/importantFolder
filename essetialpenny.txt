@@ -1,0 +1,195 @@
+ {/* {item.image && item.image.length > 0 && (
+          <Image
+            source={{uri: item.image[0].url}} // Display the first image if available
+            style={{width: 200, height: 200, marginTop: 10}}
+          />
+        )} */}
+
+// const HomePage = ({navigation}) => {
+//   const [categories, setCategories] = useState([]);
+//   const [categoryFilter, setCategoryFilter] = useState([]);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [isClicked, setIsClicked] = useState(false);
+//   const [selectedFilter, setSelectedFilter] = useState('Newest Items');
+//   const items = [
+//     {itemName: 'Newest Items'},
+//     {itemName: 'Author'},
+//     {itemName: 'Title'},
+//     {itemName: 'Price-High'},
+//     {itemName: 'Price-Low'},
+//   ];
+//   const handleDropdownPress = () => {
+//     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); ////animation for dropdown make it smooth
+//     setIsClicked(!isClicked);
+//   };
+
+//   useEffect(() => {
+//     getData();
+//     getSecondData();
+//   }, []);
+
+//   const getData = () => {
+//     axios
+//       .get('http://54.226.77.97:81/view/categories/')
+//       .then(res => {
+//         setCategories(res.data.data);
+//         console.log('response categories', res.data.data);
+//         setIsLoading(false);
+//       })
+//       .catch(err => {
+//         setIsLoading(false);
+//         console.error('responscefirst error', err);
+//       });
+//   };
+
+//   const getSecondData = async filter => {
+//     setIsLoading(true);
+
+//     const filters = {
+//       'Newest Items': 'newlyUpdated',
+//       Author: 'author',
+//       Title: 'title',
+//       'Price-High': 'price_high',
+//       'Price-Low': 'price_low',
+//     };
+
+//     try {
+//       const apiUrl = `http://54.226.77.97:81/view/allCategoryData/${
+//         filters[filter] || 'newlyUpdated'
+//       }/1/`;
+//       const response = await axios.get(apiUrl);
+//       setCategoryFilter(response.data.data.data);
+//       setIsLoading(false);
+//     } catch (error) {
+//       console.error('response second error', error);
+//       setIsLoading(false);
+//     }
+//   };
+
+//   const renderCategories = ({item}) => (
+//     <View style={styles.cardContent}>
+//       <Image source={{uri: item.image}} style={styles.cardImage} />
+//       <Text style={styles.cardTitle}>{item.title}</Text>
+//       <Text style={styles.cardText}>{item.name}</Text>
+//     </View>
+//   );
+
+//   const renderSecondCategories = ({item}) => {
+//     return (
+//       <View style={styles.secondCard}>
+//         <View style={{alignItems: 'center', padding: 10}}>
+//           <Image
+//             source={{uri: item.image[0].url}} // Assuming you want to display the first image
+//             style={{width: 127, height: 180}}
+//           />
+//         </View>
+//         <View
+//           style={{
+//             flexDirection: 'row',
+//             alignItems: 'center',
+//             justifyContent: 'space-between',
+//           }}>
+//           <Text style={styles.secondcardtitle}>{item.title}</Text>
+//           <Text style={styles.secondcardtext}>₹ {item.price}</Text>
+//         </View>
+//         <Text style={styles.secondcarddes}>{item.description}</Text>
+//       </View>
+//     );
+//   };
+
+//   return (
+//     <ImageBackground
+//       source={require('../assets/images/bacgroundImage.jpg')}
+//       style={styles.imageBacground}>
+//       <View style={styles.container}>
+//         <View style={styles.headers}>
+//           <View>
+//             <Logo />
+//           </View>
+//           <Pressable
+//             style={{
+//               width: 45,
+//               height: 45,
+//               alignItems: 'center',
+//               justifyContent: 'center',
+//               backgroundColor: '#873900',
+//               borderRadius: 50,
+//             }}>
+//             <Shoppingcart width={22} height={22} />
+//           </Pressable>
+//           <Pressable style={{}} onPress={() => navigation.openDrawer()}>
+//             <Menu width={43} height={43} />
+//           </Pressable>
+//         </View>
+//         <ScrollView style={{flex: 1}} showsVerticalScrollIndicator={false}>
+//           <Text style={styles.headerText}>Collectables</Text>
+//           <FlatList
+//             data={categories}
+//             renderItem={renderCategories}
+//             numColumns={2}
+//           />
+//           <Text style={styles.secondHeader}>Collectable items</Text>
+//           <View
+//             style={{
+//               flexDirection: 'row',
+//               justifyContent: 'space-evenly',
+//               alignItems: 'center',
+//             }}>
+//             <View style={styles.filterContent}>
+//               <Filter width={20} height={18} />
+//               <Text style={styles.filterText}>Filters</Text>
+//             </View>
+//             <TouchableOpacity
+//               style={styles.dropdownSelector}
+//               onPress={handleDropdownPress}
+//               activeOpacity={1}>
+//               <Text style={styles.dropdownText}>{selectedFilter}</Text>
+//             </TouchableOpacity>
+//             <View style={{position: 'relative', right: 45}}>
+//               <Up
+//                 width={20}
+//                 height={10}
+//                 style={[isClicked && styles.reverseImage]}
+//               />
+//             </View>
+//           </View>
+//           {isClicked && (
+//             <ScrollView style={styles.dropdownArea}>
+//               {items.map((item, index) => (
+//                 <TouchableOpacity
+//                   key={index}
+//                   style={[
+//                     styles.countryitem,
+//                     item.itemName == selectedFilter &&
+//                       styles.selectedCountryItem,
+//                   ]}
+//                   onPress={() => {
+//                     setSelectedFilter(item.itemName);
+//                     setIsClicked(false);
+//                     getSecondData(item.itemName);
+//                   }}>
+//                   <Text
+//                     style={[
+//                       styles.countryText,
+//                       item.itemName == selectedFilter &&
+//                         styles.selectedCountryText,
+//                     ]}>
+//                     {item.itemName}
+//                   </Text>
+//                 </TouchableOpacity>
+//               ))}
+//             </ScrollView>
+//           )}
+//           <FlatList data={categoryFilter} renderItem={renderSecondCategories} />
+//           {isLoading && (
+//             <View style={styles.Loader}>
+//               <ActivityIndicator
+//                 size={50}
+//                 color={'#8B0000'}></ActivityIndicator>
+//             </View>
+//           )}
+//         </ScrollView>
+//       </View>
+//     </ImageBackground>
+//   );
+// };

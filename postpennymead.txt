@@ -1,0 +1,53 @@
+useEffect(()=> {
+    getData(selectedFilter.type, page, category, searchKeyword);
+  }, [selectedFilter, page, category, searchKeyword])
+
+  const getData = async (filtertype, page, category, searchKeyword) => {
+    setLoader(true);
+    setError(null)
+    try {
+      if (searchKeyword) {
+        const searchParams = {
+          term: searchKeyword,
+          adesc: selectedOption1 === 'search by' ? 1 : 0, ///search by description
+          category_number: selectedOption1 === 'This Category' ? 1 : 0, //// whole catlouge
+          sortby: 'new',
+          page: page,
+        };
+        console.log('shsuuhgng', searchParams);
+        response = await axios.post(APIS.getSearchItems, searchParams);
+        setParticularItems(response?.data?.searchresults);
+      } else {
+        const apiUrls = `${APIS.getParticularItems}${category}/${filtertype}/${page}/`;
+        const response = await axios.get(apiUrls);
+        setParticularItems(response?.data?.data);
+      }
+    } catch (error) {
+      setError('Error fetching data');
+    } finally {
+      setLoader(false);
+    }
+  };
+  const handleSearch = () => {
+    setPage(1); // Reset page to 1 when performing a new search
+    getData();
+  };
+
+// Update selectedCatagories when route.params changes
+
+  // useEffect(() => {
+  //   if (books) {
+  //     setSelectedCatagories({itemName: books.name});
+  //   } else {
+  //     setCategory(books.category);
+  //   }
+  // }, [books]);
+
+  // useEffect(() => {
+  //   if (isSearched) {
+  //     /////it will print the searched products when it is true
+  //     handleSearch();
+  //   } else {
+  //     getPerticularCategories(selectedFilter.type, page, category);
+  //   }
+  // }, [selectedFilter.type, page, category]);

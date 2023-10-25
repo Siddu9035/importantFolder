@@ -1,0 +1,259 @@
+
+SWIFT LEARNINGS
+
+////checpoint----1
+let alphabets = ["s", "i", "d", "d", "a", "p", "p", "a"]
+let counting = alphabets.count
+print("The items containg  in the arrays are  \(counting)")
+
+let uniqueAlphabet = Set(alphabets)
+let counters = uniqueAlphabet.count
+print("The uniqueItems containg the array are \(counters)")
+print("/////////////////////////////////////////////////////")
+////checkpoint----2
+for i in 1...100 {
+    if i.isMultiple(of: 3) && i.isMultiple(of: 5) {
+        print("FizzBuzz")
+    } else if i.isMultiple(of: 3) {
+        print("fizz")
+    } else if i.isMultiple(of: 5) {
+        print("buzz")
+    } else {
+        print(i)
+    }
+}
+////checkpoint---3
+let temperatureInC: Double = 32.02
+let temperatureToF = (temperatureInC * 9 / 5) + 32
+print("//////////////////////////////////////////////////")
+print("The Temperature in celcius \(temperatureInC)")
+print("the temperature in fahrenhit \(temperatureToF)")
+////checkpoint---4
+enum squareRootError {
+    case outOfBound
+    case noRoot
+}
+
+func integerSquare(_ number: Int) throws -> Int {
+    guard number >= 0 && number <= 10000 else {
+        throw squareRootError.outOfBound
+    }
+    
+    var root = 0
+    while root * root <= number {
+        root += 1
+    }
+    
+    root -= 1
+    
+    if root * root == number {
+        return root
+    } else {
+        throw squareRootError.noRoot
+    }
+}
+
+do {
+    let result = try integerSquare(625)
+    print("The square root of \(result)")
+} catch squareRootError.outOfBound {
+    print("The number should be between 0 and 10000")
+} catch squareRootError.noRoot {
+    print("Couldn't find the root")
+}
+
+///checkpoint----5
+let luckyNumber = [7, 4, 38, 21, 16, 15, 12, 33, 31, 49]
+let filtering = luckyNumber.filter{ $0 % 2 != 0}
+print(filtering)
+let sorting = filtering.sorted()
+print(sorting)
+let maping = sorting.map{ "\($0) is the lucky numbers" }
+print(maping)
+for i in maping{
+    print(i)
+}
+///checkpoint-----6
+import Foundation
+struct car {
+    var model: String
+    var numberOfSeats: Int
+    var currentGear: Int
+
+   init(model: String, numberOfSeats: Int, currentGear: Int) {
+       self.model = model
+       self.numberOfSeats = numberOfSeats
+       self.currentGear = min(max(currentGear, 1), 10)
+   }
+
+   mutating func gearUp() {
+       currentGear = min(currentGear + 1, 10)
+   }
+   mutating func gearDown() {
+       currentGear = max(currentGear - 1, 10)
+   }
+   
+}
+var myCar = car(model: "bugati", numberOfSeats: 5, currentGear: 3)
+print("The car is \(myCar.model)")
+print("the seats avaliable are \(myCar.numberOfSeats)")
+print( "The Current gear is At \(myCar.currentGear)")
+myCar.gearUp()
+    print("changeing gear\(myCar.currentGear)")
+
+myCar.gearDown()
+    print("changeing gear\(myCar.currentGear)")
+
+myCar.currentGear = 10
+print("currentGear\(myCar.currentGear)")
+
+//////////////////////////////////////////////////////
+checkpoint--7
+import Foundation
+
+class Animal {
+    var legs: Int
+    
+    init(legs: Int) {
+        self.legs = legs
+    }
+    
+    func speak() {
+        print("Animal makes a sound")
+    }
+}
+
+class Dog: Animal {
+   override func speak() {
+        print("Dog: woof - woof")
+    }
+}
+
+class Corgi: Dog {
+    override func speak() {
+        print("Corgi: bow - bow")
+    }
+}
+
+class Poodle: Dog {
+   override func speak() {
+        print("Poodle: aaaaaaa")
+    }
+}
+
+class Cat: Animal {
+    var isTame: Bool
+    
+    init(isTame: Bool, legs: Int) {
+        self.isTame = isTame
+        super.init(legs: legs)
+    }
+    
+    override func speak() {
+        print("Cat: meow-meow")
+    }
+}
+
+class Persian: Cat {
+    init(legs: Int, isTame: Bool) {
+        super.init(isTame: isTame, legs: legs)
+    }
+    
+    override func speak() {
+        print("Persian: Purr purr!")
+    }
+}
+
+class Lion: Cat {
+    init(legs: Int, isTame: Bool) {
+        super.init(isTame: isTame, legs: legs)
+    }
+    
+    override func speak() {
+        print("Lion: Roar!")
+    }
+}
+
+let genericAnimal = Animal(legs: 4)
+let dog = Dog(legs: 4)
+let cat = Cat(isTame: true, legs: 4)
+let persian = Persian(legs: 4, isTame: true)
+let poodle = Poodle(legs: 4)
+let lion = Lion(legs: 4, isTame: true)
+let corgi = Corgi(legs: 4)
+
+genericAnimal.speak()
+dog.speak()
+cat.speak()
+persian.speak()
+poodle.speak()
+lion.speak()
+corgi.speak()
+///////////////////////////////////////////////////////////////////////////
+checkpoint----8
+
+protocol BuildingProtocol {
+    var numberOfRooms : Int{ get set }/////read and set
+    var costOfRooms : Int{ get set }
+    var agentName : String{ get set }
+    func salesSummary()
+}
+struct house: BuildingProtocol { 
+    var numberOfRooms : Int
+    var costOfRooms : Int
+    var agentName : String
+    func salesSummary() {
+        print("House Information")
+        print("number of rooms \(numberOfRooms)")
+        print("cost of rooms \(costOfRooms)")
+        print("agent name \(agentName)")
+    }
+}
+struct office: BuildingProtocol {
+    var numberOfRooms : Int
+    var costOfRooms : Int
+    var agentName : String
+    func salesSummary() {
+        print("Office Information")
+        print("number of rooms \(numberOfRooms)")
+        print("cost of rooms \(costOfRooms)")
+        print("agent Name \(agentName)")
+    }
+}
+var House = house(numberOfRooms: 5, costOfRooms: 20000, agentName: "siddu")
+var Office = office(numberOfRooms: 8, costOfRooms: 25000, agentName: "shrishail")
+
+House.salesSummary()
+Office.salesSummary()
+
+//////////////////////////////////////////////////////////////////////////////////////////
+///////////////printing star in the form of triangle///////////
+protocol shape{
+    func Draw() -> String
+}
+struct Triangle: shape{
+    var size: Int
+    func Draw() -> String {
+        var result: [String] = []
+        for length in 1...size{
+            result.append(String(repeating: "*", count: length))
+        }
+        return result.joined(separator: "\n")
+    }
+}
+let something = Triangle(size: 10)
+print(something.Draw())
+
+//////output/////
+*
+**
+***
+****
+*****
+******
+*******
+********
+*********
+**********
+
+

@@ -1,0 +1,449 @@
+const HomePage = ({navigation}) => {
+  const [categories, setCategories] = useState([]);
+  const [categoryFilter, setCategoryFilter] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isClicked, setIsClicked] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState({
+    itemName: 'Newest Items',
+    type: 'newluUpdated',
+  });
+  const items = [
+    {itemName: 'Newest Items', type: 'newluUpdated'},
+    {itemName: 'Author', type: 'author'},
+    {itemName: 'Title', type: 'title'},
+    {itemName: 'Price-High', type: 'price_high'},
+    {itemName: 'Price-Low', type: 'price_low'},
+  ];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [inputSearch, setInputSearch] = useState('');
+  const [error, setError] = useState('');
+  const scrollViewTop = useRef(null);
+  const pagesToShow = 3; // Number of page buttons to show
+  const totalPages = 1140;
+
+  const generatePaginationButtons = () => {
+    const pageButtons = [];
+
+    let startPage = Math.max(currentPage - Math.floor(pagesToShow / 2), 1);
+    let endPage = Math.min(startPage + pagesToShow - 1, totalPages);
+
+    if (endPage - startPage < pagesToShow - 1) {
+      startPage = Math.max(endPage - pagesToShow + 1, 1);
+    }
+
+    for (let page = startPage; page <= endPage; page++) {
+      pageButtons.push(
+        <TouchableOpacity
+          key={page}
+          style={[
+            styles.pageButton,
+            currentPage === page && styles.activePageButton,
+          ]}
+          onPress={() => {
+            setCurrentPage(page);
+          }}>
+          <Text
+            style={[
+              styles.pageButtonText,
+              currentPage === page && styles.activePageButton,
+            ]}>
+            {page}
+          </Text>
+        </TouchableOpacity>,
+      );
+    }
+
+    return pageButtons;
+  };
+
+  const handleGoToPage = () => {
+    const parsedPage = parseInt(inputSearch); // Convert user's input to a number
+
+    // Check if parsedPage is a valid number and within the allowed range
+    if (parsedPage >= 1 && parsedPage <= totalPages) {
+      getCollectibleItems(selectedFilter, parsedPage); // Update items based on selected filter and new page
+      setCurrentPage(parsedPage); // Update the current page
+      setError('');
+    } else {
+      setError('Page number should be greater then 0');
+    }
+  };
+
+  useEffect(() => {
+    getCatagories();
+  }, []);
+
+  useEffect(() => {
+    getCollectibleItems(selectedFilter);
+  }, [selectedFilter, currentPage]);
+
+  const getCatagories = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        'http://54.226.77.97:81/view/categories/',
+      );
+      setCategories(response.data.data);
+      setIsLoading(false);
+      console.log('response 1', response.data.data);
+    } catch (error) {
+      console.error('response first error', error);
+      setIsLoading(false);
+    }
+  };
+
+  const getCollectibleItems = async () => {
+    setIsLoading(true);
+
+    try {
+      const apiUrls = `${GET_CAT_DATA}${selectedFilter?.type}/${currentPage}/`;
+      const response = await axios.get(apiUrls);
+      setCategoryFilter(response.data.data.data);
+      setIsLoading(false);
+      console.log('response 2', response.data.data.data);
+    } catch (error) {
+      console.error('getCollectibleItems error:', error); // Log the specific error
+      setIsLoading(false);
+    }
+  };
+
+  const handleDropdownPress = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsClicked(!isClicked);
+  };
+
+  const renderCategory = ({item}) => (
+    <View style={styles.cardContent}>
+      <Image source={{uri: item.image}} style={styles.cardImage} />
+      <Text style={styles.cardTitle}>{item.title}</Text>
+      <Text style={styles.cardText}>{item.name}</Text>
+    </View>
+  );
+
+  const renderSecondCategory = ({item}) => (
+    <View style={styles.secondCard}>
+      <View style={{alignItems: 'center', padding: 10}}>
+        {item.image && item.image.length > 0 && (
+          <Image
+            source={{uri: item.image[0].url}} // Display the first image if available
+            style={{width: 200, height: 200, marginTop: 10}}
+          />
+        )}
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}>
+        <Text style={styles.secondcardtitle}>{item.title}</Text>
+        <Text style={styles.secondcardtext}>₹ {item.price}</Text>
+      </View>
+      <Text style={styles.secondcarddes}>{item.description}</Text>
+      <TouchableOpacity style={styles.Addtocartbutton} activeOpacity={1}>
+        <Text style={styles.addtocarttext}>Add To Cart</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderFilters = () => (
+    <>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignItems: 'center',
+          right: -10,
+        }}>
+        <View style={styles.filterContent}>
+          <Filter width={20} height={18} />
+          <Text style={styles.filterText}>Filters</Text>
+        </View>
+        <TouchableOpacity
+          style={styles.dropdownSelector}
+          onPress={handleDropdownPress}
+          activeOpacity={1}>
+          <Text style={styles.dropdownText}>{selectedFilter.itemName}</Text>
+        </TouchableOpacity>
+        <View style={{position: 'relative', right: 45}}>
+          <Up
+            width={20}
+            height={10}
+            style={[isClicked && styles.reverseImage]}
+          />
+        </View>
+      </View>
+      <>
+        {isClicked && (
+          <ScrollView style={styles.dropdownArea}>
+            {items.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.countryitem,
+                  item.itemName == selectedFilter && styles.selectedCountryItem,
+                ]}
+                onPress={() => {
+                  setSelectedFilter(item);
+                  setIsClicked(false);
+                  // getCollectibleItems(item.itemName);
+                }}>
+                <Text
+                  style={[
+                    styles.countryText,
+                    item.itemName == selectedFilter &&
+                      styles.selectedCountryText,
+                  ]}>
+                  {item.itemName}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
+      </>
+    </>
+  );
+
+  const renderPaginationButtons = () => (
+    <View style={styles.paginationButtons}>
+      {currentPage > pagesToShow && (
+        <>
+          <TouchableOpacity
+            style={styles.pageButton}
+            onPress={() => {
+              setCurrentPage(1);
+            }}>
+            <Text style={styles.pageButtonText}>1</Text>
+          </TouchableOpacity>
+        </>
+      )}
+      {generatePaginationButtons()}
+      {currentPage <= totalPages - pagesToShow && (
+        <>
+          <Text style={styles.ellipsis}>...</Text>
+          <TouchableOpacity
+            style={styles.pageButton1}
+            onPress={() => setCurrentPage(totalPages)}>
+            <Text style={styles.pageButtonText}>{totalPages}</Text>
+          </TouchableOpacity>
+        </>
+      )}
+    </View>
+  );
+
+  const renderPagination = () => (
+    <View style={styles.buttonContainer1}>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={styles.arrowbutton}
+          onPress={() => {
+            const previousPage = currentPage - 1;
+            setCurrentPage(previousPage);
+          }}>
+          <Text style={styles.pageButtonText}>{'<'}</Text>
+        </TouchableOpacity>
+        {renderPaginationButtons()}
+        <TouchableOpacity
+          style={styles.arrowbackbutton}
+          onPress={() => {
+            const newPage = currentPage + 1;
+            setCurrentPage(newPage);
+          }}>
+          <Text style={styles.pageButtonText}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text
+          style={{
+            color: 'black',
+            fontFamily: 'RobotoSlab-Regular',
+            fontSize: 15,
+            paddingRight: 10,
+          }}>
+          Go To Page
+        </Text>
+        <TextInput
+          style={{
+            width: 40,
+            height: 40,
+            borderWidth: 1,
+            textAlign: 'center',
+            textAlignVertical: 'center',
+            color: '#873900',
+            borderColor: '#873900',
+          }}
+          keyboardType="phone-pad"
+          maxLength={4}
+          onChangeText={setInputSearch}
+          value={inputSearch}
+        />
+        <TouchableOpacity onPress={handleGoToPage}>
+          <Text
+            style={{
+              color: 'black',
+              paddingLeft: 20,
+              textDecorationLine: 'underline',
+              fontSize: 15,
+              fontFamily: 'RobotoSlab-Regular',
+            }}>
+            Go {'>'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+      {error !== '' && <Text style={{color: 'red'}}>{error}</Text>}
+    </View>
+  );
+
+  const renderFooter = () => (
+    <View style={styles.footerContainer}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View
+          style={{
+            width: 175,
+            height: 110,
+            backgroundColor: '#FFF8F2',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+            marginHorizontal: 5,
+            borderRadius: 5,
+          }}>
+          <PayPal />
+          <View style={{flexDirection: 'row', padding: 5}}>
+            <MasterCard />
+            <MaestroCard />
+            <AmericanExpress />
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <Visa />
+            <VisaLogo />
+            <DirectDebit />
+          </View>
+        </View>
+        <View
+          style={{
+            backgroundColor: '#FFF8F2',
+            width: 175,
+            height: 110,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 20,
+            marginHorizontal: 5,
+            borderRadius: 5,
+          }}>
+          <View style={{padding: 5}}>
+            <Caure width={150} height={30} />
+          </View>
+          <View style={{padding: 2}}>
+            <Trust />
+          </View>
+          <View style={{padding: 2}}>
+            <Reviews />
+          </View>
+        </View>
+      </View>
+      <View style={{marginTop: 50}}>
+        <SocialMedia />
+      </View>
+      <Text style={{textAlign: 'center', marginTop: 50}}>
+        Copyright © 2023, Pemmymead | All Rights Reserved | Terms & Conditions |
+        Privacy Policy
+      </Text>
+    </View>
+  );
+
+  const data = [
+    {
+      key: 'header',
+      renderFunction: () => <Text style={styles.headerText}>Collectables</Text>,
+    },
+    {key: 'categories', data: categories, renderItem: renderCategory},
+    {
+      key: 'secondHeader',
+      renderFunction: () => (
+        <Text style={styles.secondHeader}>Collectable items</Text>
+      ),
+    },
+    {key: 'filters', renderFunction: renderFilters},
+    {
+      key: 'secondCategories',
+      data: categoryFilter,
+      renderItems: renderSecondCategory,
+    },
+    {
+      key: 'Pagination',
+      renderFunction: renderPagination,
+    },
+    {
+      key: 'Footer',
+      renderFunction: renderFooter,
+    },
+  ];
+
+  return (
+    <ImageBackground
+      source={require('../assets/images/bacgroundImage.jpg')}
+      style={styles.imageBacground}>
+      <View style={styles.container}>
+        <View style={styles.headers}>
+          <View>
+            <Logo />
+          </View>
+          <Pressable
+            style={{
+              width: 45,
+              height: 45,
+              alignItems: 'center',
+              justifyContent: 'center',
+              backgroundColor: '#873900',
+              borderRadius: 50,
+            }}>
+            <Shoppingcart width={22} height={22} />
+          </Pressable>
+          <Pressable style={{}} onPress={() => navigation.openDrawer()}>
+            <Menu width={43} height={43} />
+          </Pressable>
+        </View>
+
+        <FlatList
+          data={data}
+          renderItem={({item}) => {
+            if (item.renderItem) {
+              return (
+                <FlatList
+                  data={item.data}
+                  renderItem={item.renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                  numColumns={2}
+                />
+              );
+            } else if (item.renderItems) {
+              return (
+                <FlatList
+                  ref={scrollViewTop}
+                  data={item.data}
+                  renderItem={item.renderItems}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              );
+            } else {
+              return item.renderFunction();
+            }
+          }}
+          keyExtractor={item => item.key}
+          showsVerticalScrollIndicator={false}
+        />
+        {isLoading && (
+          <View style={styles.Loader}>
+            <ActivityIndicator size={50} color={'#8B0000'} />
+          </View>
+        )}
+      </View>
+    </ImageBackground>
+  );
+};

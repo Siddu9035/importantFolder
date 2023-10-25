@@ -1,0 +1,628 @@
+{/* <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={imageSource}
+              style={styles.sectionimg}
+              keyExtractor={(item, index) => index}
+              renderItem={({item, index}) => (
+                <Image key={index} source={item} style={styles.img} />
+              )}
+            /> */}
+
+ // Check if the user is logged in from AsyncStorage
+  // const checkLoginStatus = async () => {
+  //   try {
+  //     const isLoggedInString = await AsyncStorage.getItem('isLoggedIn');
+  //     const isLoggedInValue = isLoggedInString === 'true'; // Convert string to boolean
+  //     setIsLoggedIn(isLoggedInValue);
+  //     isLoggedInRef.current = isLoggedInValue; // Update the ref with the current value
+  //   } catch (error) {
+  //     console.log('Error retrieving login status:', error);
+  //   }
+  // };
+  // // This effect will be called when the component is mounted
+  // useEffect(() => {
+  //   checkLoginStatus();
+  // }, []);
+
+const handleAddToCart = () => {
+    if (!isLoggedIn) {
+      setIsModalVisible(true);
+    } else if (!isLotSelected) {
+      setLotError('Please select a lot before adding to cart.');
+    } else if (!selectedUnit) {
+      setUnitError('Please select a unit before adding to cart.');
+    } else {
+      setLotError('');
+      setUnitError('');
+      setIsModalVisible(false);
+
+      // Check if the item already exists in the cart
+      const existingItemIndex = cartItems.findIndex(
+        item =>
+          item.itemName === sectionData.title &&
+          item.selectedUnit === selectedUnit,
+      );
+
+      if (existingItemIndex !== -1) {
+        // If the item exists, update its quantity
+        const updatedCart = cartItems.map((item, index) =>
+          index === existingItemIndex
+            ? {
+                ...item,
+                price: item.price + selectedPrice * count,
+                quantity: item.quantity + count,
+              }
+            : item,
+        );
+        setCartItems(updatedCart);
+      } else {
+        // If the item does not exist, add it with quantity 1
+        const cartItem = {
+          itemName: sectionData.title,
+          selectedUnit: selectedUnit,
+          price: selectedPrice * count,
+          quantity: count,
+          image:
+            (sectionData.SectionImage && sectionData.SectionImage[0]) ||
+            (sectionData.Sectionimage && sectionData.Sectionimage[0]) ||
+            'default_image_url',
+          description: [sectionData.description[0], sectionData.description[2]],
+        };
+        setCartItems([...cartItems, cartItem]);
+      }
+
+      console.log('items added successfully');
+      navigation.navigate('Cart');
+    }
+  };
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+cartscreen.js
+// return (
+  // <View style={styles.container}>
+  //   <View style={styles.Header}>
+  //     <TouchableOpacity
+  //       style={styles.iconContainer}
+  //       onPress={() => navigation.goBack()}>
+  //       <Icon name="angle-left" size={40} color={'white'} />
+  //     </TouchableOpacity>
+  //     <Text style={styles.headerText}>Cart</Text>
+  //   </View>
+  //   <View style={styles.subContainer}>
+  //     {isLoggedIn && (
+  //       <>
+  //         {cartItems.length > 0 ? (
+  //           <>
+  //             <ScrollView contentContainerStyle={styles.contentContainer}>
+  //               <View style={styles.itemsContainer}>
+  //                 {cartItems.map((item, index) => (
+  //                   <>
+  //                     <View key={index} style={styles.itemContainer}>
+  //                       {/* Render other cart item details (name, quantity, price, etc.) */}
+  //                       <View style={styles.itemDetails}>
+  //                         <Text style={styles.title}>{item.itemName}</Text>
+  //                         {item.description.map((item, index) => (
+  //                           <View key={index} style={styles.dataContainer}>
+  //                             <Text style={styles.data}>{item.des}</Text>
+  //                           </View>
+  //                         ))}
+  //                         <View style={styles.quantityFlex}>
+  //                           <Text style={styles.quantityText}>Qty</Text>
+  //                           <View style={styles.counter}>
+  //                             <TouchableOpacity
+  //                               style={styles.plusButton}
+  //                               onPress={() => incrementCount(index)}>
+  //                               <Icon name="plus" size={20} color={'black'} />
+  //                             </TouchableOpacity>
+  //                             <Text style={{color: 'black'}}>
+  //                               {itemQuantities[index]}
+  //                             </Text>
+  //                             <TouchableOpacity
+  //                               onPress={() => decrementCount(index)}>
+  //                               <Icon name="minus" size={20} color={'black'} />
+  //                             </TouchableOpacity>
+  //                           </View>
+  //                         </View>
+  //                         <Text style={styles.selectedUnit}>
+  //                           Unit:{item.selectedUnit}lb
+  //                         </Text>
+  //                         <Text style={styles.unitprice}>
+  //                           Unit Price: ${selectedUnitPrice}
+  //                         </Text>
+  //                         {/* Add more details as needed */}
+  //                       </View>
+  //                       <Image source={item.image} style={styles.itemImage} />
+  //                     </View>
+  //                     <View style={styles.line1} />
+  //                     <View style={styles.pricetext}>
+  //                       <Text style={styles.priceText}>
+  //                         ${item.selectedPrice * itemQuantities[index]}
+  //                       </Text>
+  //                       <TouchableOpacity
+  //                         style={styles.removeButton}
+  //                         onPress={() => removeItem(index)}>
+  //                         <Text style={{color: 'blue'}}>Remove Item</Text>
+  //                       </TouchableOpacity>
+  //                     </View>
+  //                   </>
+  //                 ))}
+  //               </View>
+  //               <View style={styles.shippingAddressContainer}>
+  //                 <View>
+  //                   <Text style={styles.shippingAddressTitle}>
+  //                     Shipping Address
+  //                   </Text>
+  //                   <Text style={styles.shippingAddressText}>
+  //                     {shippingAddress.name}
+  //                   </Text>
+  //                   <Text style={styles.shippingAddressText}>
+  //                     {shippingAddress.addressLine1}
+  //                     {shippingAddress.addressLine2
+  //                       ? ', ' + shippingAddress.addressLine2
+  //                       : ''}
+  //                   </Text>
+  //                   <Text style={styles.shippingAddressText}>
+  //                     {shippingAddress.city}, {shippingAddress.state},{' '}
+  //                     {shippingAddress.zipCode}
+  //                   </Text>
+  //                   <Text style={styles.shippingAddressText}>
+  //                     Contact Number : {shippingAddress.phoneNumber}
+  //                   </Text>
+  //                 </View>
+  //                 <TouchableOpacity style={styles.editButton}>
+  //                   <Text style={styles.editButtonText}>Update Address</Text>
+  //                 </TouchableOpacity>
+  //               </View>
+  //             </ScrollView>
+  //             <View style={styles.line} />
+  //             <View style={styles.bottomContainer}>
+  //               <View>
+  //                 <Text style={styles.totalPrice}>
+  //                   ${grandTotal.toFixed(2)}
+  //                 </Text>
+  //                 <Text style={styles.totalPrice}>Current Total</Text>
+  //               </View>
+  //               <TouchableOpacity style={styles.placeOrderButton}>
+  //                 <Text style={styles.placeOrderButtonText}>Place Order</Text>
+  //               </TouchableOpacity>
+  //             </View>
+  //           </>
+  //         ) : (
+  //           <View style={styles.emptyCartContainer}>
+  //             <Image
+  //               source={require('../assets/images/emptyCart.png')}
+  //               style={styles.emptyCartImage}
+  //             />
+  //             <Text style={styles.emptyCartText}>Your cart is empty.</Text>
+  //           </View>
+  //         )}
+  //       </>
+  //     )}
+  //     {!isLoggedIn && (
+  //       <View style={styles.withoutLogin}>
+  //         <Text style={styles.loginText}>Please Login To See Your Cart</Text>
+  //         <TouchableOpacity
+  //           style={styles.loginButton}
+  //           onPress={() => navigation.navigate('login')}>
+  //           <Text style={styles.loginButtonText}>Login</Text>
+  //         </TouchableOpacity>
+  //       </View>
+  //     )}
+  //   </View>
+  // </View>;
+  // );
+
+///api integration
+
+import {View, Text, Image} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
+
+const FirstApi = () => {
+  const [product, setProduct] = useState({});
+  const [postData, setPostData] = useState('');
+  const [putData, setPutData] = useState('');
+  const [patchData, setPatchData] = useState('');
+
+  const data = {
+    title: 'new name',
+    price: 13.5,
+    description: 'lorem ipsum set',
+    image: 'https://i.pravatar.cc',
+    category: 'electronics',
+  };
+
+  const fetchData = () => {
+    axios
+      .get('https://fakestoreapi.com/products/10')
+      .then(res => {
+        setProduct(res.data);
+        console.log(res.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const postDatas = () => {
+    axios
+      .post('https://fakestoreapi.com/products/1', data)
+      .then(res => {
+        setPostData(res.data);
+        console.log(res.data);
+      })
+      .catch(res => {
+        console.log(res);
+      });
+  };
+
+  const updateProduct = () => {
+    axios
+      .put('https://fakestoreapi.com/products/10', data)
+      .then(res => {
+        setPutData(res.data);
+        console.log('PUT response:', res.data);
+      })
+      .catch(error => {
+        console.log('PUT error:', error);
+      });
+  };
+
+  const deleteProduct = () => {
+    axios
+      .delete('https://fakestoreapi.com/products/10')
+      .then(res => {
+        console.log('deleted responce', res.data);
+      })
+      .catch(error => {
+        console.log('delete error', error);
+      });
+  };
+
+  const patchProduct = () => {
+    axios
+      .patch('https://fakestoreapi.com/products/10', {title: 'siddappa'})
+      .then(response => {
+        setPatchData(response.data);
+        console.log('PATCH response:', response.data);
+      })
+      .catch(error => {
+        console.log('PATCH error:', error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  return (
+    <>
+      <View style={{flex: 1, alignItems: 'center', marginTop: 10}}>
+        <Image
+          source={{uri: product.image}}
+          style={{width: 100, height: 100}}
+        />
+        <Text style={{color: 'black'}}>{product.id}</Text>
+        <Text style={{color: 'black'}}>{product.title}</Text>
+        <Text style={{color: 'black'}}>{product.category}</Text>
+        <Text style={{color: 'black'}}>{product.price}</Text>
+        <Text style={{color: 'black'}}>{product.description}</Text>
+        <Text style={{color: 'black'}}>{postData.title}</Text>
+        <Text style={{color: 'black'}}>{postData.body}</Text>
+        <Text style={{color: 'black'}}>{postData.userId}</Text>
+
+        <Text style={{color: 'black'}}>
+          {postData.id ? `POST Response: ${postData.title}` : ''}
+        </Text>
+        <Text style={{color: 'black'}}>
+          {putData.id ? `PUT Response: ${putData.title}` : ''}
+        </Text>
+        <Text style={{color: 'black'}}>
+          {patchData.id ? `PATCH Response: ${patchData.title}` : ''}
+        </Text>
+      </View>
+    </>
+  );
+};
+
+export default FirstApi;
+
+
+⭐️
+
+protocol buildingProtocol{
+    var numberofRooms: Int { get set }
+    var costOfRooms : Int { get set }
+    var agentName : String { get set }
+    
+    func printSalesSummary()
+}
+struct House: buildingProtocol{
+    var numberofRooms : Int
+    var costOfRooms : Int 
+    var agentName : String 
+    
+    func printSalesSummary(){
+    print("House information")
+        print("number of rooms\(numberofRooms)")
+        print("cost of the house is $\(costOfRooms)")
+        print("agent name \(agentName)")
+    }
+}
+struct office: buildingProtocol{
+    var numberofRooms : Int
+    var costOfRooms : Int 
+    var agentName : String
+    
+    func printSalesSummary(){
+    print("House information")
+        print("number of rooms\(numberofRooms)")
+        print("cost of the house is $\(costOfRooms)")
+        print("agent name \(agentName)")
+    }
+}
+
+var house = House(numberofRooms: 4, costOfRooms: 20000, agentName: "siddanna")
+var Office = office(numberofRooms: 19, costOfRooms: 40000, agentName: "shrishailesj")
+house.printSalesSummary()
+Office.printSalesSummary()
+
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+  },
+  imagebackground: {
+    flex: 1,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    marginTop: 15,
+  },
+  shopingCartImg: {
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 50,
+    backgroundColor: '#873900',
+  },
+  dropDown: {
+    flexDirection: 'row',
+  },
+  searchFlex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    marginHorizontal: 10,
+  },
+  inputsearch: {
+    borderWidth: 1,
+    width: '80%',
+    height: 50,
+    borderColor: '#873900',
+    padding: 10,
+    color: '#873900',
+  },
+  searchbutton: {
+    borderWidth: 1,
+    width: 42,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#873900',
+    padding: 10,
+  },
+  radioText: {
+    color: '#873900',
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  radioText2: {
+    color: '#873900',
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  searchTexts: {
+    color: '#873900',
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+  },
+  titlename: {
+    color: '#454545',
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: 22,
+    fontWeight: '400',
+    marginHorizontal: 15,
+    marginVertical: 15,
+  },
+  titledes: {
+    color: '#454545',
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+    fontWeight: '400',
+    marginHorizontal: 15,
+    marginVertical: 15,
+  },
+  titledes: {
+    color: '#454545',
+    fontFamily: 'OpenSans-Regular',
+    fontWeight: '400',
+    fontSize: 16,
+    marginHorizontal: 15,
+    marginVertical: 10,
+  },
+  secondCard: {
+    marginTop: 30,
+    width: '85%',
+    minHeight: 380,
+    alignSelf: 'center',
+    margin: 20,
+    padding: 20,
+    paddingBottom: 40,
+    elevation: 10,
+    backgroundColor: '#FFF8F2',
+    borderRadius: 5,
+  },
+  secondcardauthor: {
+    padding: 10,
+    color: 'black',
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: 17,
+    fontWeight: '700',
+  },
+  secondcardtitle: {
+    padding: 10,
+    color: 'black',
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  secondcardtext: {
+    fontSize: 17,
+    color: 'black',
+    fontFamily: 'RobotoSlab-Regular',
+    fontWeight: '700',
+  },
+  secondcarddes: {
+    color: 'black',
+    paddingLeft: 10,
+    fontFamily: 'OpenSans-Regular',
+    fontSize: 16,
+  },
+
+  Addtocartbutton: {
+    width: 120,
+    padding: 15,
+    backgroundColor: '#873900',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'flex-end',
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  addtocarttext: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'RobotoSlab-Regular',
+    fontWeight: '600',
+  },
+  footerContainer: {
+    height: 380,
+    backgroundColor: '#873900',
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  footerContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    height: '30%',
+    width: '100%',
+    marginTop: 20,
+    // borderWidth:3
+  },
+  footerText: {
+    textAlign: 'center',
+    marginTop: 50,
+    color: '#FFF8F2',
+  },
+  socialMediaImg: {
+    width: 130,
+    height: 70,
+    resizeMode: 'stretch',
+  },
+  paginationAndSearch: {
+    backgroundColor: '#FFF8F2',
+    height: 180,
+    flex: 1,
+    width: '95%',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 10,
+  },
+  paginationFlex: {
+    flexDirection: 'row',
+    marginTop: 10,
+    alignItems: 'center',
+    // alignSelf: 'center',
+    justifyContent: 'space-around',
+    width: '92%',
+  },
+  forwardButton: {
+    borderWidth: 1,
+    // margin: 5,
+    marginHorizontal: 5,
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#873900',
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  forwardButtonText: {
+    color: '#873900',
+  },
+  paginationButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    margin: 5,
+    // flex: 1,
+    // paddingBottom: 15,
+    width: 45,
+    height: 45,
+    borderColor: '#873900',
+    marginBottom: 10,
+    borderRadius: 5,
+  },
+  backwardButton: {
+    borderWidth: 1,
+    // margin: 5,
+    width: 30,
+    height: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#873900',
+    borderRadius: 5,
+    marginBottom: 5,
+    marginHorizontal: 5,
+  },
+  searcFlex: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchText: {
+    color: 'black',
+    fontFamily: 'RobotoSlab-Regular',
+    fontSize: 15,
+    paddingRight: 10,
+  },
+  inputText: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    color: '#873900',
+    borderColor: '#873900',
+    borderRadius: 5,
+    padding: 5,
+  },
+  goButton: {
+    color: 'black',
+    paddingLeft: 20,
+    textDecorationLine: 'underline',
+    fontSize: 15,
+    fontFamily: 'RobotoSlab-Regular',
+  },
+});
+

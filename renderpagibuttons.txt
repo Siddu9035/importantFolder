@@ -1,0 +1,119 @@
+ const renderButtons = () => {
+    // const numberArray = ['1', '2', '...', '1139', '1140'];
+    const data = [
+      {id: 1, value: currentPage},
+      {id: 2, value: currentPage + 1},
+      {id: 3, value: '.....'},
+      {id: 4, value: totalPages - 1},
+      {id: 5, value: totalPages},
+    ];
+    return (
+      <View style={{flexDirection: 'row', marginTop: 10, alignItems: 'center'}}>
+        <TouchableOpacity
+          onPress={() => {
+            const previousPage = currentPage - 1;
+            setCurrentPage(previousPage);
+          }}
+          disabled={currentPage === 1}
+          style={{
+            borderWidth: 1,
+            margin: 5,
+            width: 30,
+            height: 30,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderColor: '#873900',
+            borderRadius: 5,
+          }}>
+          <Text style={{color: '#873900'}}>{'<'}</Text>
+        </TouchableOpacity>
+        {data.map(item => (
+          <TouchableOpacity
+            disabled={item.id === 3 ? true : false}
+            key={item.id}
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderWidth: 1,
+              margin: 2,
+              width: 50,
+              height: 50,
+              borderColor: '#873900',
+              marginBottom: 10,
+              borderRadius: 5,
+              backgroundColor: getBackground(item),
+            }}
+            onPress={() => {
+              console.log(
+                'item.value != totalPages || item.value != totalPages - 1',
+                item.value != totalPages || item.value != totalPages - 1,
+              );
+              if (item.id != 3) {
+                if (item?.id != 4 && item?.id != 5) {
+                  setCurrentPage(item.value);
+                  setSelectedPage(1)
+                } else {
+                  setSelectedPage(item.value)
+                  getCollectibleItems(item.value);
+                }
+              }
+            }}>
+            <Text
+              style={{
+                color: getTextColor(item) 
+              }}>
+              {item.value}
+            </Text>
+          </TouchableOpacity>
+        ))}
+        <TouchableOpacity
+          onPress={() => {
+            const nextPage = currentPage + 1;
+            setCurrentPage(nextPage);
+          }}
+          style={{
+            borderWidth: 1,
+            margin: 5,
+            width: 30,
+            height: 30,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderColor: '#873900',
+            borderRadius: 5,
+          }}>
+          <Text style={{color: '#873900'}}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+
+ const getBackground = item => {
+    if (item?.id != 4 && item?.id != 5) {
+      if (item?.value === currentPage && selectedPage === 1 ) {
+        return '#873900';
+      }else{
+        return null
+      }
+    }else{
+      if (item?.value === selectedPage && selectedPage != 1) {
+        return '#873900';
+      }
+    }
+  };
+
+  const getTextColor = item => {
+    if (item?.id != 4 && item?.id != 5) {
+      if (item?.value === currentPage && selectedPage === 1) {
+        return '#FFF8F2';
+      }else{
+        return '#873900';
+      }
+    }else{
+      if (item?.value === selectedPage) {
+        return '#FFF8F2';
+      }else{
+        return '#873900';
+      }
+    }
+  };

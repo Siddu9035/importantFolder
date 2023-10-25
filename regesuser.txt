@@ -1,0 +1,58 @@
+ const checkUserEmail = async () => {
+    setLoader(true);
+    const apiUrl = `http://54.226.77.97:81/view/checkuser/jayashree.tm@dollarbirdinc.com/`;
+
+    try {
+      const response = await axios.get(apiUrl);
+
+      if (response.status === 200) {
+        // User is registered
+        console.log('User is registered.');
+      } else if (response.status === 404) {
+        // User is not registered
+        console.log('User is not registered.');
+      } else {
+        // Handle other response statuses as needed
+        console.log('Error checking user registration.');
+      }
+    } catch (error) {
+      console.error('Error checking user registration:', error);
+    } finally{
+      setLoader(false);
+    }
+  };
+
+///////////////////////////////////////////////////////////////////////////////
+ // const checkUserEmail = async email => {
+  //   setLoader(true);
+  //   const apiUrl = `http://54.226.77.97:81/view/checkuser/${email}/`;
+
+  //   try {
+  //     const response = await axios.get(apiUrl);
+
+  //     if (response.status === 200) {
+  //       // User is registered
+  //       console.log('------->', response.data.email);
+  //       console.log('User is registered.');
+  //     } else if (response.status === 404) {
+  //       // User is not registered
+  //       console.log('User is not registered.');
+  //     } else {
+  //       // Handle other response statuses as needed
+  //       console.log('Error checking user registration.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error checking user registration:', error);
+  //   } finally {
+  //     setLoader(false);
+  //   }
+  // };
+//////////////////////////////////////////////////////////////////////////////
+ // initialText={
+            //   // Quantity[index]
+            //   // ?
+            //   `Qty ${Quantity[index]}`
+            //   // :
+            //   //  selectedQuantity.name
+            //   //  || 'Default Text'
+            // }

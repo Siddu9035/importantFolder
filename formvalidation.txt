@@ -1,0 +1,400 @@
+ const handleButtonClick = () => {
+    switch (true) {
+      case userDetails.email === '' ||
+        userDetails.name === '' ||
+        userDetails.Address1 === '' ||
+        userDetails.Address2 === '' ||
+        userDetails.country === '' ||
+        userDetails.state === '' ||
+        userDetails.payment === '' ||
+        userDetails.mobileNumber === '':
+        // Alert.alert('Warning!', 'All Fields Are Mandatory!!');
+        setShowError(true);
+        setErrorMsg(true);
+        break;
+
+      case !nameRegex.test(userDetails.name):
+        setErrorMsg({...errorMsg, name: 'Enter valid name'});
+        setShowError({...showError, name: true});
+        break;
+
+      // case !countryRegex.test(userDetails.country):
+      //   setErrorMsg({...errorMsg, country: 'Enter valid country'});
+      //   setShowError({...showError, country: true});
+      //   break;
+
+      case !emailRegex.test(userDetails.email):
+        setErrorMsg({...errorMsg, email: 'Enter valid email'});
+        setShowError({...showError, email: true});
+        break;
+
+      case !regexMobile.test(userDetails.mobileNumber):
+        setErrorMsg({...errorMsg, mobileNumber: 'Enter valid mobileNumber'});
+        setShowError({...showError, mobileNumber: true});
+        break;
+
+      case !addressRegex.test(userDetails.Address1):
+        setErrorMsg({...errorMsg, Address1: 'Enter valid Address'});
+        setShowError({...showError, Address1: true});
+        break;
+
+      case !addressRegex.test(userDetails.Address2):
+        setErrorMsg({...errorMsg, Address2: 'Enter valid Address'});
+        setShowError({...showError, Address2: true});
+        break;
+
+      case !stateRegex.test(userDetails.state):
+        setErrorMsg({...errorMsg, state: 'Enter valid state'});
+        setShowError({...showError, state: true});
+        break;
+
+      // case !paymentRegex.test(userDetails.payment):
+      //   setErrorMsg({ ...errorMsg, payment: 'Enter valid payment' });
+      //   setShowError({ ...showError, payment: true });
+      //   break;
+
+      default:
+        setShowError({
+          ...showError,
+          mobileNumber: false,
+          email: false,
+          name: false,
+          country: false,
+          Address1: false,
+          Address2: false,
+          state: false,
+          // payment: false,
+        });
+        break;
+    }
+  };
+///////////////////////////////////////
+const [userDetails, setUserDetails] = useState({
+    mobileNumber: '',
+    name: '',
+    Address1: '',
+    Address2: '',
+    email: '',
+    state: '',
+    country: '',
+    payment: '',
+  });
+
+  const [errorMsg, setErrorMsg] = useState({
+    mobileNumber: '',
+    name: '',
+    Address1: '',
+    Address2: '',
+    email: '',
+    state: '',
+    country: '',
+    payment: '',
+  });
+
+  const [showError, setShowError] = useState({
+    mobileNumber: false,
+    name: false,
+    Address1: false,
+    Address2: false,
+    email: false,
+    state: false,
+    country: false,
+    payment: false,
+  });
+/////////////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  email: e,
+                });
+              }}
+              onBlur={() => {
+                if (!emailRegex.test(userDetails.email)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    email: 'Enter valid email',
+                  });
+                  setShowError({
+                    ...showError,
+                    email: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  email: false,
+                });
+              }}
+///////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  name: e,
+                });
+              }}
+              onBlur={() => {
+                if (!nameRegex.test(userDetails.name)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    name: 'Enter valid name',
+                  });
+                  setShowError({
+                    ...showError,
+                    name: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  name: false,
+                });
+              }}
+///////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  lastName: e,
+                });
+              }}
+              // value={LastValue}
+              onBlur={() => {
+                if (!addressRegex.test(userDetails.Address1)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    Address1: 'Enter valid Address',
+                  });
+                  setShowError({
+                    ...showError,
+                    Address1: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  Address1: false,
+                });
+              }}
+/////////////////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  Address2: e,
+                });
+              }}
+              onBlur={() => {
+                if (!addressRegex.test(userDetails.Address2)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    Address2: 'Enter valid Address',
+                  });
+                  setShowError({
+                    ...showError,
+                    Address2: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  Address2: false,
+                });
+              }}
+//////////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  mobileNumber: e,
+                });
+              }}
+              onBlur={() => {
+                if (!phoneNumberRegex.test(userDetails.mobileNumber)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    mobileNumber: 'Enter valid MobileNumber',
+                  });
+                  setShowError({
+                    ...showError,
+                    mobileNumber: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  mobileNumber: false,
+                });
+              }}
+//////////////////////////
+onChangeText={e => {
+                setUserDetails({
+                  ...userDetails,
+                  p: e,
+                });
+              }}
+              onBlur={() => {
+                if (!stateRegex.test(userDetails.state)) {
+                  setErrorMsg({
+                    ...errorMsg,
+                    state: 'Enter valid country',
+                  });
+                  setShowError({
+                    ...showError,
+                    state: true,
+                  });
+                }
+              }}
+              onPressIn={() => {
+                setShowError({
+                  ...showError,
+                  state: false,
+                });
+              }}
+////////////////////////////////
+else if (!addressRegex.test(userDetails.Address1)) {
+      setErrorMsg({...errorMsg, Address1: 'Enter valid Address'});
+      setShowError({...showError, Address1: true});
+    }
+////////////////////////////const handleButtonClick = () => {
+    const newErrorMsg = {}; // Initialize a new error message object
+    // Check each field and set an error message if it's empty
+    if (userDetails.email === '') {
+      newErrorMsg.email = 'Email is required';
+    }
+    if (userDetails.name === '') {
+      newErrorMsg.name = 'Name is required';
+    }
+    if (userDetails.Address1 === '') {
+      newErrorMsg.Address1 = 'Address 1 is required';
+    }
+    if (userDetails.postal === '') {
+      newErrorMsg.postal = 'Postal is required';
+    }
+    if (userDetails.country === '') {
+      newErrorMsg.country = 'Country is required';
+    }
+    if (userDetails.PhoneNumber === '') {
+      newErrorMsg.PhoneNumber = 'Phone Number is required';
+    }
+
+    const payload = {
+      name: userDetails.name,
+      email: userDetails.email,
+      address1: userDetails.Address1,
+      address2: userDetails.Address2,
+      hphone: userDetails.PhoneNumber,
+      county: userDetails.country,
+      postcode: userDetails.postal,
+      promotional_emails: selectedOption1 ? 1 : 0, // Check if the checkbox is selected
+      items: [
+        {
+          sysid: Sysid,
+          pricePerItem: '7',
+        },
+      ],
+    };
+    console.log("🚀 ~ file: CartScreen.js:323 ~ handleButtonClick ~ payload:", payload)
+    // Send the POST request to the API using Axios
+    axios
+      .post('http://54.226.77.97:81/view/orderplacing/', payload)
+      .then(response => {
+        // Handle the API response here
+        console.log('API Response:', response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        if (error.response) {
+          console.log('Server responded with:', error.response.status);
+          console.log('Response data:', error.response.data);
+        }
+      });
+
+    // Check if there are any error messages
+    if (Object.keys(newErrorMsg).length > 0) {
+      // There are errors, update the error messages and show errors
+      setErrorMsg(newErrorMsg);
+      setShowError({
+        ...showError,
+        email: 'email' in newErrorMsg,
+        name: 'name' in newErrorMsg,
+        Address1: 'Address1' in newErrorMsg,
+        Address2: 'Address2' in newErrorMsg,
+        country: 'country' in newErrorMsg,
+        PhoneNumber: 'PhoneNumber' in newErrorMsg,
+        postal: 'postal' in newErrorMsg,
+      });
+    } else if (!nameRegex.test(userDetails.name)) {
+      setErrorMsg({...errorMsg, name: 'Enter valid name'});
+      setShowError({...showError, name: true});
+    } else if (!emailRegex.test(userDetails.email)) {
+      setErrorMsg({...errorMsg, email: 'Enter valid email'});
+      setShowError({...showError, email: true});
+    } else if (!phoneNumberRegex.test(userDetails.PhoneNumber)) {
+      setErrorMsg({...errorMsg, PhoneNumber: 'Enter valid PhoneNumber'});
+      setShowError({...showError, PhoneNumber: true});
+    } else if (!postalRegex.test(userDetails.postal)) {
+      setErrorMsg({...errorMsg, postal: 'Enter valid PostCode'});
+      setShowError({...showError, postal: true});
+    } else {
+      setShowError({
+        ...showError,
+        PhoneNumber: false,
+        email: false,
+        name: false,
+        country: false,
+        postal: false,
+      });
+    }
+  };
+/////////////////////////////////////////
+ const payload = {
+      name: userDetails.name,
+      email: userDetails.email,
+      address1: userDetails.Address1,
+      address2: userDetails.Address2,
+      hphone: userDetails.PhoneNumber,
+      county: userDetails.country,
+      postcode: userDetails.postal,
+      promotional_emails: selectedOption1 ? 1 : 0, // Check if the checkbox is selected
+      country: userDetails.country,
+      payment: 'Credit or Debit Card',
+      message: 'buyer message',
+      items: [
+        {
+          sysid: Sysid,
+          pricePerItem: '7',
+        },
+      ],
+    };
+    // Send the POST request to the API using Axios
+    axios
+      .post('http://54.226.77.97:81/view/orderplacing/', payload)
+      .then(response => {
+        // Handle the API response here
+        console.log('API Response:', response.data);
+        // navigation.navigate('OrderSummary', { responseData: response.data });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        if (error.response) {
+          console.log('Server responded with:', error.response.status);
+          console.log('Response data:', error.response.data);
+        }
+      });
+/////////////////////////////////////
+// axios
+    //   .post(`http://54.226.77.97:81/view/orderplacing/`, apiData)
+    //   .then(response => {
+    //     // Handle the API response here (e.g., show a success message)
+    //     console.log('API Response:', response.data);
+    //     // setFormSubmitted(true); // Set the form as submitted
+    //   })
+    //   .catch(error => {
+    //     console.error('Error:', error);
+    //     if (error.response) {
+    //       console.log('Server responded with:', error.response.status);
+    //       console.log('Response data:', error.response.data);
+    //     }
+    //   });

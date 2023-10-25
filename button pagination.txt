@@ -1,0 +1,538 @@
+ const pagesToShow = 2; // Number of page buttons to show
+  const totalPages = 1140;
+
+ const generatePaginationButtons = () => {
+    const pageButtons = [];
+
+    let startPage = Math.max(currentPage - Math.floor(pagesToShow / 1), 1);
+    let endPage = Math.min(startPage + pagesToShow - 1, totalPages);
+
+    if (endPage - startPage < pagesToShow - 1) {
+      startPage = Math.max(endPage - pagesToShow + 1, 1);
+    }
+
+    if (startPage > 1) {
+      pageButtons.push(
+        <TouchableOpacity
+          key={1}
+          style={styles.pageButton}
+          onPress={() => setCurrentPage(1)}>
+          <Text style={styles.pageButtonText}>1</Text>
+        </TouchableOpacity>,
+      );
+    }
+
+    for (let page = startPage; page <= endPage; page++) {
+      pageButtons.push(
+        <TouchableOpacity
+          key={page}
+          style={[
+            styles.pageButton,
+            currentPage === page && styles.activePageButton,
+          ]}
+          onPress={() => {
+            setCurrentPage(page);
+          }}>
+          <Text
+            style={[
+              styles.pageButtonText,
+              currentPage === page && styles.activePageButton,
+            ]}>
+            {page}
+          </Text>
+        </TouchableOpacity>,
+      );
+    }
+
+    if (endPage < totalPages) {
+      if (endPage < totalPages - 1) {
+        pageButtons.push(
+          <Text key={'ellipsis-end'} style={styles.ellipsis}>
+            ...
+          </Text>,
+        );
+      }
+
+      pageButtons.push(
+        <TouchableOpacity
+          key={totalPages}
+          style={styles.pageButton}
+          onPress={() => setCurrentPage(totalPages)}>
+          <Text style={styles.pageButtonText}>{totalPages}</Text>
+        </TouchableOpacity>,
+      );
+    }
+
+    return pageButtons;
+  };
+
+  const renderPaginationButtons = () => (
+    <View style={styles.paginationButtons}>{generatePaginationButtons()}</View>
+  );
+
+<View style={styles.buttonContainer1}>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                style={styles.arrowbutton}
+                disabled={currentPage === 1}
+                onPress={() => {
+                  const previousPage = currentPage - 1;
+                  setCurrentPage(previousPage);
+                }}>
+                <Text style={styles.pageButtonText}>{'<'}</Text>
+              </TouchableOpacity>
+              {renderPaginationButtons()}
+              <TouchableOpacity
+                style={styles.arrowbackbutton}
+                disabled={currentPage === totalPages}
+                onPress={() => {
+                  const newPage = currentPage + 1;
+                  setCurrentPage(newPage);
+                }}>
+                <Text style={styles.pageButtonText}>{'>'}</Text>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontFamily: 'RobotoSlab-Regular',
+                  fontSize: 15,
+                  paddingRight: 10,
+                }}>
+                Go To Page
+              </Text>
+              <TextInput
+                style={{
+                  width: 40,
+                  height: 40,
+                  borderWidth: 1,
+                  textAlign: 'center',
+                  textAlignVertical: 'center',
+                  color: '#873900',
+                  borderColor: '#873900',
+                  borderRadius: 5,
+                  padding: 5,
+                }}
+                keyboardType="phone-pad"
+                maxLength={4}
+                onChangeText={setInputSearch}
+                value={inputSearch}
+              />
+              <TouchableOpacity onPress={handleGoToPage}>
+                <Text
+                  style={{
+                    color: 'black',
+                    paddingLeft: 20,
+                    textDecorationLine: 'underline',
+                    fontSize: 15,
+                    fontFamily: 'RobotoSlab-Regular',
+                  }}>
+                  Go {'>'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {error !== '' && <Text style={{color: 'red'}}>{error}</Text>}
+          </View>
+
+
+ buttonContainer1: {
+    alignSelf: 'center',
+    marginBottom: 10,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#FFF8F2',
+    height: 150,
+    elevation: 10,
+    borderRadius: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flex: 1,
+    width: '90%',
+    marginHorizontal: 25,
+  },
+  paginationButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    minWidth: '60%',
+  },
+  pageButton: {
+    marginHorizontal: 4,
+    paddingVertical: 6,
+    borderWidth: 1,
+    width: 40,
+    height: 50,
+    borderColor: '#873900',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  pageButton1: {
+    marginHorizontal: 4,
+    paddingVertical: 6,
+    borderWidth: 1,
+    width: 40,
+    height: 50,
+    borderColor: '#873900',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  activePageButton: {
+    backgroundColor: '#873900',
+    color: 'white',
+  },
+  pageButtonText: {
+    fontSize: 16,
+    color: '#873900',
+    fontFamily: 'RobotoSlab-Regular',
+    fontWeight: 'bold',
+  },
+  ellipsis: {
+    borderWidth: 1,
+    width: 40,
+    height: 50,
+    fontSize: 16,
+    marginHorizontal: 5,
+    color: '#873900',
+    borderColor: '#873900',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    borderRadius: 5,
+  },
+  arrowbutton: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#873900',
+    borderRadius: 5,
+  },
+  arrowbackbutton: {
+    width: 40,
+    height: 40,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderColor: '#873900',
+    borderRadius: 5,
+  },
+
+const renderButtons = () => {
+    const buttons = [];
+
+    // Previous page button
+    buttons.push(
+      <TouchableOpacity
+        key="previous"
+        style={{
+          borderWidth: 1,
+          padding: 5,
+          borderColor: '#873900',
+          width: 30,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        disabled={currentPage === 1}
+        onPress={() => setCurrentPage(currentPage - 1)}>
+        <Text style={{color: '#873900', fontSize: 15}}>{'<'}</Text>
+      </TouchableOpacity>,
+    );
+
+    // Page buttons
+    buttons.push(
+      <View
+        key="pages"
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {currentPage > 1 && (
+          <TouchableOpacity
+            style={{
+              borderWidth: 1,
+              borderColor: '#873900',
+              padding: 5,
+              margin: 5,
+              width: 40,
+              height: 50,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+            onPress={() => setCurrentPage(currentPage - 1)}>
+            <Text style={{color: '#873900'}}>{currentPage - 1}</Text>
+          </TouchableOpacity>
+        )}
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: '#873900',
+            padding: 5,
+            margin: 5,
+            width: 40,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => setCurrentPage(currentPage)}>
+          <Text style={{color: '#873900'}}>{currentPage}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            borderWidth: 1,
+            borderColor: '#873900',
+            padding: 5,
+            margin: 5,
+            width: 40,
+            height: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={() => setCurrentPage(currentPage + 1)}>
+          <Text style={{color: '#873900'}}>{currentPage + 1}</Text>
+        </TouchableOpacity>
+      </View>,
+    );
+
+    // Next page button
+    buttons.push(
+      <TouchableOpacity
+        key="next"
+        style={{
+          borderWidth: 1,
+          color: '#873900',
+          padding: 5,
+          borderColor: '#873900',
+          width: 30,
+          height: 40,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        disabled={currentPage === totalPages}
+        onPress={() => setCurrentPage(currentPage + 1)}>
+        <Text style={{color: 'black'}}>{'>'}</Text>
+      </TouchableOpacity>,
+    );
+
+    return buttons;
+  };
+
+const renderButtons = () => {
+    const numberArray = ['1', '2', '...', '1139', '1140'];
+    return (
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <TouchableOpacity onPress={() => {
+          const previousPage = currentPage - 1;
+          setCurrentPage(previousPage)
+        }} 
+        disabled={currentPage === 1}
+        style={{
+          padding: 5,
+        }}
+        >
+          <Text style={{color: 'black'}}>{'<'}</Text>
+        </TouchableOpacity>
+        {numberArray.map((number, index) => (
+          <>
+            <TouchableOpacity
+              key={index}
+              style={{backgroundColor: 'lightgray', padding: 10}}>
+              <Text style={{color: 'black'}}>{number}</Text>
+            </TouchableOpacity>
+          </>
+        ))}
+        <TouchableOpacity onPress={() => {
+          const nextPage = currentPage + 1;
+          setCurrentPage(nextPage)
+        }}
+        
+        >
+          <Text style={{color: 'black'}}>{'>'}</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
+// const renderButtons = () => (
+  //   <View
+  //     style={{
+  //       flexDirection: 'row',
+  //       justifyContent: 'space-evenly',
+  //       marginTop: 20,
+  //       alignItems: 'center',
+  //       padding: 10,
+  //     }}>
+  //     <TouchableOpacity
+  //       style={{
+  //         borderWidth: 1,
+  //         padding: 5,
+  //         borderColor: '#873900',
+  //         width: 30,
+  //         height: 40,
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       }}
+  //       disabled={currentPage === 1}
+  //       onPress={() => {
+  //         const previousPage = currentPage - 1;
+  //         setCurrentPage(previousPage);
+  //       }}>
+  //       <Text style={{color: '#873900', fontSize: 15}}>{'<'}</Text>
+  //     </TouchableOpacity>
+  //     <View
+  //       style={{
+  //         flexDirection: 'row',
+  //         justifyContent: 'center',
+  //         alignItems: 'center',
+  //       }}>
+  //       <TouchableOpacity
+  //         style={{
+  //           borderWidth: 1,
+  //           borderColor: '#873900',
+  //           padding: 5,
+  //           margin: 5,
+  //           width: 40,
+  //           height: 50,
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //         }}>
+  //         <Text style={{color: '#873900'}}>1</Text>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity
+  //         style={{
+  //           borderWidth: 1,
+  //           borderColor: '#873900',
+  //           padding: 5,
+  //           margin: 5,
+  //           width: 40,
+  //           height: 50,
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //         }}>
+  //         <Text style={{color: '#873900'}}>2</Text>
+  //       </TouchableOpacity>
+  //       <Text
+  //         style={{
+  //           borderWidth: 1,
+  //           color: '#873900',
+  //           borderColor: '#873900',
+  //           padding: 5,
+  //           margin: 5,
+  //           width: 40,
+  //           height: 50,
+  //           textAlign: 'center',
+  //           textAlignVertical: 'center',
+  //         }}>
+  //         ....
+  //       </Text>
+  //       <TouchableOpacity
+  //         style={{
+  //           borderWidth: 1,
+  //           borderColor: '#873900',
+  //           padding: 5,
+  //           margin: 5,
+  //           width: 40,
+  //           height: 50,
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //         }}>
+  //         <Text style={{color: '#873900'}}>1139</Text>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity
+  //         style={{
+  //           borderWidth: 1,
+  //           borderColor: '#873900',
+  //           padding: 5,
+  //           margin: 5,
+  //           width: 40,
+  //           height: 50,
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //         }}>
+  //         <Text style={{color: '#873900'}}>1140</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //     <TouchableOpacity
+  //       style={{
+  //         borderWidth: 1,
+  //         color: '#873900',
+  //         padding: 5,
+  //         borderColor: '#873900',
+  //         width: 30,
+  //         height: 40,
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       }}
+  //       disabled={currentPage === totalPages}
+  //       onPress={() => {
+  //         const newPage = currentPage + 1;
+  //         setCurrentPage(newPage);
+  //       }}>
+  //       <Text style={{color: 'black'}}>{'>'}</Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // );
+
+// const renderSearch = () => (
+  //   <>
+  //     <View
+  //       style={{
+  //         flexDirection: 'row',
+  //         alignItems: 'center',
+  //         justifyContent: 'center',
+  //       }}>
+  //       <Text
+  //         style={{
+  //           color: 'black',
+  //           fontFamily: 'RobotoSlab-Regular',
+  //           fontSize: 15,
+  //           paddingRight: 10,
+  //         }}>
+  //         Go To Page
+  //       </Text>
+  //       <TextInput
+  //         style={{
+  //           width: 40,
+  //           height: 40,
+  //           borderWidth: 1,
+  //           textAlign: 'center',
+  //           textAlignVertical: 'center',
+  //           color: '#873900',
+  //           borderColor: '#873900',
+  //           borderRadius: 5,
+  //           padding: 5,
+  //         }}
+  //         keyboardType="phone-pad"
+  //         maxLength={4}
+  //         onChangeText={setInputSearch}
+  //         value={inputSearch}
+  //       />
+  //       <TouchableOpacity onPress={handleGoToPage}>
+  //         <Text
+  //           style={{
+  //             color: 'black',
+  //             paddingLeft: 20,
+  //             textDecorationLine: 'underline',
+  //             fontSize: 15,
+  //             fontFamily: 'RobotoSlab-Regular',
+  //           }}>
+  //           Go {'>'}
+  //         </Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //     {error !== '' && <Text style={{color: 'red'}}>{error}</Text>}
+  //   </>
+  // );

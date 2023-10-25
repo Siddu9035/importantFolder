@@ -1,0 +1,9 @@
+ const navigateToHomeScreen = () => {
+    navigation.navigate('HomePage'); // Navigate to the "Home" screen
+  };
+{/* <DrawerItem
+        label="Home"
+        onPress={navigateToHomeScreen}
+        icon={() => <Home width={42} height={42} />}
+        labelStyle={styles.homeText}
+      /> */}
